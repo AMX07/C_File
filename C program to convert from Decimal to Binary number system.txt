@@ -1,0 +1,38 @@
+/**
+ * C program to convert from Decimal to Binary number system
+ */
+
+#include <stdio.h>
+#include <string.h>
+
+int main()
+{
+    long decimal, tempDecimal;
+    char binary[65];
+    int index = 0;
+    
+    /* Input decimal number from user */
+    printf("Enter any decimal value : ");
+    scanf("%ld", &decimal);
+    
+    /* Copy decimal value to temp variable */
+    tempDecimal = decimal;
+    
+    while(tempDecimal > 0)
+    {
+        binary[index] = (tempDecimal % 2) + '0';
+        
+        tempDecimal /= 2;
+
+        index++;
+    }
+    binary[index] = '\0';
+    
+    /* Reverse the converted binary to get final binary result */
+    strrev(binary);
+
+    printf("Decimal value = %ld\n", decimal);
+    printf("Binary value of decimal = %s", binary);
+
+    return 0;
+}

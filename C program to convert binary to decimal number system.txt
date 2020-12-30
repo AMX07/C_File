@@ -1,0 +1,99 @@
+/**
+ * C program to convert binary to decimal number system
+ */
+
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+
+#define SIZE 16 /* N-bit binary number */
+
+void getTwosComplement(char *twosComp, const char *);
+
+int main()
+{
+    char binary[SIZE + 1], tempBinary[SIZE + 1];
+    int i, j, signBit = 0;
+    long long decimal = 0;
+
+    printf("Enter any %d bit binary value: ", SIZE);
+    gets(binary);
+
+    strcpy(tempBinary, binary);
+
+    /*
+     * If sign bit is on find two's complement of the binary number
+     */
+    if(binary[0] == '1')
+    {
+        signBit = 1;
+        getTwosComplement(tempBinary, binary);
+    }
+
+    /*
+     * Convert decimal to binary number
+     */
+    for(i=0; i<SIZE; i++)
+    {
+        if(tempBinary[i] == '1')
+        {
+            decimal += pow(2, (SIZE - (i+1)));
+        }
+    }
+
+    if(signBit==1)
+    {
+        decimal *= -1;
+    }
+
+    printf("Binary value = %s\n", binary);
+    printf("Decimal value = %lld", decimal);
+
+    return 0;
+}
+
+/*
+ * Gets the 2's complement of the binary value.
+ */
+void getTwosComplement(char * twosComp, const char * binary)
+{
+    char onesComp[SIZE + 1];
+    int i, carry=1;
+
+    /*
+     * Finds 1's complement of the binary number
+     */
+    for(i=0; i<SIZE; i++)
+    {
+        if(binary[i]=='1')
+        {
+            onesComp[i] = '0';
+        }
+        else if(binary[i]=='0')
+        {
+            onesComp[i] = '1';
+        }
+    }
+    onesComp[SIZE] = '\0';
+
+    /*
+     * Adds 1 to 1's complement of the binary number to get 2's complement
+     */
+    for(i=SIZE-1; i>=0; i--)
+    {
+        if(onesComp[i]=='1' && carry==1)
+        {
+            twosComp[i] = '0';
+        }
+        else if(onesComp[i]=='0' && carry==1)
+        {
+            twosComp[i] = '1';
+            carry = 0;
+        }
+        else
+        {
+            twosComp[i] = onesComp[i];
+        }
+    }
+    twosComp[SIZE] = '\0';
+}
